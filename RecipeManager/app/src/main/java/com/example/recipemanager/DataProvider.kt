@@ -1,10 +1,5 @@
+import com.example.recipemanager.Recipe
 import java.util.*
-
-data class Recipe(val name: String,
-                  val description: String,
-                  val image: String,
-                  val ingredients: String,
-                  val directions: String)
 
 class DataProvider {
 
