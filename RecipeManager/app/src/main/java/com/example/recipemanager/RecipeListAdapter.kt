@@ -1,6 +1,7 @@
 package com.example.recipemanager
 
 import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +13,15 @@ class RecipeListAdapter(context: Context , recipeList : LinkedList<Recipe> ) : R
     private var mRecipeList  = DataProvider.recipes
     private var mInflater: LayoutInflater? = null
 
+    val EXTRA_NAME: String = "name"
+    val EXTRA_IMAGE: String = "image"
+    val EXTRA_INGREDIENTS: String = "ingredients"
+    val EXTRA_DIRECTIONS: String = "directions"
+    val parent_context:Context
     init{
         mInflater = LayoutInflater.from(context)
         mRecipeList = recipeList
+        parent_context =context
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {
         val mItemView = mInflater!!.inflate(R.layout.recipe_list_item,  parent ,false)
@@ -26,8 +33,8 @@ class RecipeListAdapter(context: Context , recipeList : LinkedList<Recipe> ) : R
     }
 
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
-        val mCurrent = mRecipeList[position]
-        holder.wordItemView.text = mCurrent.toString()
+        holder.nameItemView.text = mRecipeList[position].name
+        holder.descriptionItemView.text = mRecipeList[position].description
     }
 
 
@@ -38,16 +45,21 @@ class RecipeListAdapter(context: Context , recipeList : LinkedList<Recipe> ) : R
         override fun onClick(v: View?) {
             // Get the position of the item that was clicked.
             val mPosition = layoutPosition
-            // Use that to access the affected item in mWordList.
-            val element = mRecipeList[mPosition]
-            // Change the word in the mWordList.
-            mRecipeList[mPosition]
+
+            val intent = Intent(parent_context , RecipeView::class.java)
+            intent.putExtra(EXTRA_NAME, mRecipeList[mPosition].name)
+            intent.putExtra(EXTRA_DIRECTIONS, mRecipeList[mPosition].directions)
+            intent.putExtra(EXTRA_IMAGE, mRecipeList[mPosition].image)
+            intent.putExtra(EXTRA_INGREDIENTS, mRecipeList[mPosition].ingredients)
+
+            parent_context.startActivity(intent)
+
             // Notify the adapter, that the data has changed so it can
-            // update the RecyclerView to display the data.
             mAdapter.notifyDataSetChanged()
         }
 
-        val wordItemView: TextView = itemView.findViewById(R.id.word)
+        val nameItemView: TextView = itemView.findViewById(R.id.name)
+        val descriptionItemView: TextView = itemView.findViewById(R.id.description)
         val mAdapter: RecipeListAdapter = adapter
     }
 }
