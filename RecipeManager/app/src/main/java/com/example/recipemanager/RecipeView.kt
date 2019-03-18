@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import com.squareup.picasso.Picasso
 
 
 class RecipeView : AppCompatActivity() {
@@ -31,7 +32,7 @@ class RecipeView : AppCompatActivity() {
         ingredients_textview.text = my_ingredients
 
         val my_image_url :String = intent.getStringExtra("image")
-
+        Picasso.get().load(my_image_url).fit().placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_background).into(image_view)
 
     }
 }
